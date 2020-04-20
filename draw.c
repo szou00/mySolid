@@ -19,7 +19,7 @@
 
   Color should be set differently for each polygon.
   ====================*/
-void scanline_convert( struct matrix *points, int i, screen s, zbuffer zb ) {
+void scanline_convert( struct matrix *points, int i, screen s, zbuffer zb) {
   color c;
   c.red = rand() % 255;
   c.green = rand() % 255;
@@ -105,6 +105,9 @@ void scanline_convert( struct matrix *points, int i, screen s, zbuffer zb ) {
   z0 = zB;
   z1 = zM;
 
+  // printf("x0: %d\n", x1);
+  // printf("x1: %d\n", x0);
+
   // printf("xT: %lf\n", xT);
   // printf("xM: %lf\n", xM);
   // printf("xB: %lf\n\n", xB);
@@ -117,7 +120,8 @@ void scanline_convert( struct matrix *points, int i, screen s, zbuffer zb ) {
   dz1 = (zM - zB) / (yM - yB);
   dz1_flip = (zT - zM) / (yT - yM);
 
-  while (y <= yM) {
+  while (y < yM) {
+    // printf("below middle y: %d yM: %d\n", y, yM);
     draw_line(x0, y, z0, x1, y, z1, s, zb, c);
     x0 += dx0;
     x1 += dx1;
@@ -132,6 +136,8 @@ void scanline_convert( struct matrix *points, int i, screen s, zbuffer zb ) {
   dz1 = dz1_flip;
 
   while (y <= yT) {
+    // printf("above middle y: %d yT: %d\n", y, yT);
+    // printf("x0: %lf x1: %lf\n", x0,x1);
     draw_line(x0, y, z0, x1, y, z1, s, zb, c);
     x0 += dx0;
     x1 += dx1;
@@ -175,7 +181,7 @@ void add_polygon( struct matrix *polygons,
   Goes through polygons 3 points at a time, drawing
   lines connecting each points to create bounding triangles
   ====================*/
-void draw_polygons( struct matrix *polygons, screen s, zbuffer zb, color c ) {
+void draw_polygons( struct matrix *polygons, screen s, zbuffer zb, color c) {
   if ( polygons->lastcol < 3 ) {
     printf("Need at least 3 points to draw a polygon!\n");
     return;
@@ -242,16 +248,18 @@ void add_box( struct matrix *polygons,
   z1 = z-depth;
 
 
-  //front
+  // front
   add_polygon(polygons, x, y, z, x1, y1, z, x1, y, z);
   add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z);
-  //back
+
+  // back
   add_polygon(polygons, x1, y, z1, x, y1, z1, x, y, z1);
   add_polygon(polygons, x1, y, z1, x1, y1, z1, x, y1, z1);
 
   //right side
   add_polygon(polygons, x1, y, z, x1, y1, z1, x1, y, z1);
   add_polygon(polygons, x1, y, z, x1, y1, z, x1, y1, z1);
+
   //left side
   add_polygon(polygons, x, y, z1, x, y1, z, x, y, z);
   add_polygon(polygons, x, y, z1, x, y1, z1, x, y1, z);

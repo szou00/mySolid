@@ -124,6 +124,32 @@ void parse_file ( char * filename,
       pop(csystems);
     }//end of push
 
+    else if (strncmp(line, "default color", strlen(line)) == 0 ) {
+      c.red = 0;
+      c.green = 0;
+      c.blue = 0;
+    } //change tea color
+    else if (strncmp(line, "straw", strlen(line)) == 0 ) {
+      c.red = 255;
+      c.green = 171;
+      c.blue = 236;
+    } //change straw color
+    else if (strncmp(line, "tea", strlen(line)) == 0 ) {
+      c.red = 95;
+      c.green = 146;
+      c.blue = 191;
+    } //change tea color
+    else if (strncmp(line, "eyes", strlen(line)) == 0 ) {
+      c.red = 172;
+      c.green = 104;
+      c.blue = 50;
+    } //change eye color
+    else if (strncmp(line, "white", strlen(line)) == 0 ) {
+      c.red = 255;
+      c.green = 255;
+      c.blue = 255;
+    } //change eye color to white
+
     else if ( strncmp(line, "box", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
       //printf("BOX\t%s", line);
